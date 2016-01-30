@@ -112,31 +112,37 @@ public class Entity
         // Virtue
         BaseStatFormula virtueFormula = new BaseStatFormula(virtueStat);
         virtueFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        virtueFormula.Multiplier = virtueMultipliers;
         virtueStat.SetFormula(virtueFormula);
 
         // Resolve
         BaseStatFormula resolveFormula = new BaseStatFormula(resolveStat);
         resolveFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        resolveFormula.Multiplier = resolveMultipliers;
         resolveStat.SetFormula(resolveFormula);
 
         // Spirit
         BaseStatFormula spiritFormula = new BaseStatFormula(spiritStat);
         spiritFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        spiritFormula.Multiplier = spiritMultipliers;
         spiritStat.SetFormula(spiritFormula);
 
         // Deftness
         BaseStatFormula deftFormula = new BaseStatFormula(deftStat);
         deftFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        deftFormula.Multiplier = deftMultipliers;
         deftStat.SetFormula(deftFormula);
 
         // Vitality
         BaseStatFormula vitalityFormula = new BaseStatFormula(virtueStat);
         vitalityFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        vitalityFormula.Multiplier = vitalityMultipliers;
         vitalityStat.SetFormula(vitalityFormula);
 
         // Health
         HealthFormula hpFormula = new HealthFormula(hpStat, vitalityStat);
         hpFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        hpFormula.Multiplier = hpMultipliers;
         hpStat.SetFormula(hpFormula);
 
         // Experience
