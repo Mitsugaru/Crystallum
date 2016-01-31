@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class BaseStatFormula : AbstractFormula
+public class BaseStatFormula : AbstractFormula<int>
 {
     private Stats stat;
 

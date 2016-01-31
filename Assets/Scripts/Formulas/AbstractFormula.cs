@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Abstract formula class with basic XXHash random function and multiplier values.
 /// </summary>
-public abstract class AbstractFormula : IFormula
+public abstract class AbstractFormula<T> : IFormula<T>
 {
     public MultiplierValues Multiplier { get; set; }
 
@@ -10,7 +10,7 @@ public abstract class AbstractFormula : IFormula
     /// </summary>
     protected HashFunction random;
 
-    public abstract int Generate(int level);
+    public abstract T Generate(int level);
     
     public void SetSeed(int seed)
     {

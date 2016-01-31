@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Interface for all formulas.
 /// </summary>
-public interface IFormula {
+public interface IFormula<T> {
     /// <summary>
     /// Multiplier rules for the formula
     /// </summary>
@@ -22,5 +22,5 @@ public interface IFormula {
     /// </summary>
     /// <param name="level">level to generate a value for</param>
     /// <returns>value for the given level</returns>
-    int Generate(int level);
+    T Generate(int level);
 }

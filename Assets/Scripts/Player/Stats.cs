@@ -12,7 +12,7 @@ public class Stats
     /// The formula that governs the value generation.
     /// </summary>
     /// <returns></returns>
-    protected IFormula Formula { get; set; }
+    protected IFormula<int> Formula { get; set; }
 
     private int limit = 100;
 
@@ -41,7 +41,7 @@ public class Stats
     /// Set the formula to use for value generation
     /// </summary>
     /// <param name="formula">Formula to use</param>
-    public void SetFormula(IFormula formula)
+    public void SetFormula(IFormula<int> formula)
     {
         this.Formula = formula;
     }

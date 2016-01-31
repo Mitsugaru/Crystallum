@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// Formula that calculates HP stat values
 /// </summary>
-public class HealthFormula : AbstractFormula
+public class HealthFormula : AbstractFormula<int>
 {
     /// <summary>
     /// Health stat reference
