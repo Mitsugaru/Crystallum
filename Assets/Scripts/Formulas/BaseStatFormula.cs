@@ -1,11 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-
+﻿/// <summary>
+/// Formula that calculates base stat values.
+/// </summary>
 public class BaseStatFormula : AbstractFormula<int>
 {
+    /// <summary>
+    /// The stat reference
+    /// </summary>
     private Stats stat;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="stat">Base stat</param>
     public BaseStatFormula(Stats stat)
     {
         this.stat = stat;

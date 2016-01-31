@@ -3,6 +3,10 @@
 /// </summary>
 public abstract class AbstractFormula<T> : IFormula<T>
 {
+    /// <summary>
+    /// Multiplier value that formulas use.
+    /// </summary>
+    /// <returns>Multipliers</returns>
     public MultiplierValues Multiplier { get; set; }
 
     /// <summary>
