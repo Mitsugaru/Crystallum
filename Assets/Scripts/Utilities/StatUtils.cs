@@ -9,17 +9,17 @@ public class StatUtils
     /// Theoretical maximum experience value
     /// </summary>
     public static readonly int MAX_EXP = 10000;
-    
+
     /// <summary>
     /// The minimum value range for a stat
     /// </summary>
     public static readonly int MIN_STAT = 1;
-    
+
     /// <summary>
     /// The maximum value range for a stat
     /// </summary>
     public static readonly int MAX_STAT = 10;
-    
+
     /// <summary>
     /// The maximum value for the HP stat
     /// </summary>
@@ -43,12 +43,23 @@ public class StatUtils
 
         return eVal;
     }
-    
+
     /// <summary>
     /// Calculate the base experience value.
     /// </summary>
     /// <returns>Base XP value</returns>
-    public static float CalcBaseExp() {
+    public static float CalcBaseExp()
+    {
         return CalcEValue(1) * MAX_EXP;
+    }
+
+    public static int CalcMaxStat(int level)
+    {
+        int max = 0;
+        if (level >= 1 && level <= 100)
+        {
+            max = level * MAX_STAT;
+        }
+        return max;
     }
 }
