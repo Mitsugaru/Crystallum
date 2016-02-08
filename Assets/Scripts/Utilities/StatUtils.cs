@@ -8,7 +8,7 @@ public class StatUtils
     /// <summary>
     /// Theoretical maximum experience value
     /// </summary>
-    public static readonly int MAX_EXP = 10000;
+    public static readonly int MAX_EXP = 100000;
 
     /// <summary>
     /// The minimum value range for a stat
@@ -38,7 +38,7 @@ public class StatUtils
         if (level >= 1 && level <= 100)
         {
             //(EXP(current level × 3 ÷ 101) − 1 ÷ (EXP(3) − 1)) ÷ 20
-            eVal = (Mathf.Exp(level * 3 / 101) - 1 / (Mathf.Exp(3) - 1)) / 20;
+            eVal = (Mathf.Exp(level * 3f / 101f) - 1f / (Mathf.Exp(3f) - 1f)) / 20f;
         }
 
         return eVal;
