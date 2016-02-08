@@ -4,6 +4,15 @@ using System.Collections;
 public class Entity
 {
 
+    protected string name = "";
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+    }
+
     protected int level = 1;
     /// <summary>
     /// Current level
@@ -14,6 +23,31 @@ public class Entity
         get
         {
             return level;
+        }
+    }
+
+    protected int hp = 0;
+    public int HP
+    {
+        get
+        {
+            return hp;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                hp = 0;
+            }
+            else if (value > hpStat.GetValue(level))
+            {
+                //Make sure we don't go above their max hp;
+                hp = hpStat.GetValue(level);
+            }
+            else
+            {
+                hp = value;
+            }
         }
     }
 
@@ -39,7 +73,8 @@ public class Entity
         get
         {
             int req = xpStat.GetValue(level + 1) - xp;
-            if(req < 0) {
+            if (req < 0)
+            {
                 req = 0;
             }
             return req;
@@ -47,18 +82,67 @@ public class Entity
     }
 
     protected Stats virtueStat = new Stats();
+    public int Virtue
+    {
+        get
+        {
+            return virtueStat.GetValue(level);
+        }
+    }
 
     protected Stats resolveStat = new Stats();
+    public int Resolve
+    {
+        get
+        {
+            return resolveStat.GetValue(level);
+        }
+    }
 
     protected Stats spiritStat = new Stats();
+    public int Spirit
+    {
+        get
+        {
+            return spiritStat.GetValue(level);
+        }
+    }
 
     protected Stats deftStat = new Stats();
+    public int Deft
+    {
+        get
+        {
+            return deftStat.GetValue(level);
+        }
+    }
 
     protected Stats vitalityStat = new Stats();
+    public int Vitality
+    {
+        get
+        {
+            return vitalityStat.GetValue(level);
+        }
+    }
 
     protected Stats hpStat = new Stats();
+    public int MaxHP
+    {
+        get
+        {
+            return hpStat.GetValue(level);
+        }
+    }
 
     protected Stats xpStat = new Stats();
+    public int BaseXP
+    {
+        get
+        {
+            return xpStat.GetValue(level);
+        }
+    }
 
     /// <summary>
     /// Hash function
@@ -70,11 +154,25 @@ public class Entity
     /// </summary>
     protected int rCount = 0;
 
-    public Entity(int seed)
+    public Entity(int seed) : this("NONAME", 1, seed)
     {
+    }
+
+    public Entity(int level, int seed) : this("NONAME", level, seed)
+    {
+    }
+
+    public Entity(string name, int level, int seed)
+    {
+        this.name = name;
+        this.level = level;
         random = new XXHash(seed);
         GenerateFormulas();
         GenerateStats();
+
+        //Get the values for hp and xp after generation
+        hp = hpStat.GetValue(level);
+        xp = xpStat.GetValue(level);
     }
 
     protected void GenerateFormulas()
@@ -147,6 +245,7 @@ public class Entity
 
         // Experience
         ExperienceFormula xpFormula = new ExperienceFormula(xpStat);
+        xpFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
         xpStat.SetFormula(xpFormula);
     }
 
