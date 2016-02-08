@@ -4,7 +4,7 @@ using System.Collections;
 public class Entity
 {
 
-    private int level = 1;
+    protected int level = 1;
     /// <summary>
     /// Current level
     /// </summary>
@@ -17,7 +17,7 @@ public class Entity
         }
     }
 
-    private int xp = 0;
+    protected int xp = 0;
     /// <summary>
     /// The current xp
     /// </summary>
@@ -46,29 +46,29 @@ public class Entity
         }
     }
 
-    private Stats virtueStat = new Stats();
+    protected Stats virtueStat = new Stats();
 
-    private Stats resolveStat = new Stats();
+    protected Stats resolveStat = new Stats();
 
-    private Stats spiritStat = new Stats();
+    protected Stats spiritStat = new Stats();
 
-    private Stats deftStat = new Stats();
+    protected Stats deftStat = new Stats();
 
-    private Stats vitalityStat = new Stats();
+    protected Stats vitalityStat = new Stats();
 
-    private Stats hpStat = new Stats();
+    protected Stats hpStat = new Stats();
 
-    private Stats xpStat = new Stats();
+    protected Stats xpStat = new Stats();
 
     /// <summary>
     /// Hash function
     /// </summary>
-    private HashFunction random;
+    protected HashFunction random;
 
     /// <summary>
     /// Step counter for hash function
     /// </summary>
-    private int rCount = 0;
+    protected int rCount = 0;
 
     public Entity(int seed)
     {
