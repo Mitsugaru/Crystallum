@@ -32,7 +32,12 @@ public class ExperienceFormula : AbstractFormula<int>
         {
             int prevExp = experience.GetValue(level - 1);
             int backExp = experience.GetValue(level - 2);
-            expReq = Mathf.FloorToInt(Mathf.Max(prevExp, expVal) + (prevExp - random.Range(backExp, prevExp, level)));
+            int modifier = backExp;
+            if (backExp != prevExp)
+            {
+                modifier = random.Range(backExp, prevExp, level);
+            }
+            expReq = Mathf.FloorToInt(Mathf.Max(prevExp, expVal) + (prevExp - modifier));
         }
 
         return expReq;
