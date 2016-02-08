@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using UnityEngine;
 
 /// <summary>
 /// Formula that calculates HP stat values
@@ -33,12 +32,25 @@ public class HealthFormula : AbstractFormula<int>
 
         if (level > 1)
         {
+            int modifier = Multiplier.Maximum;
+            int min = VitalityStat.GetValue(level - 1) * Multiplier.Minimum;
+            int max = VitalityStat.GetValue(level) * Multiplier.Maximum;
+            // Make sure we don't divide by zero
+            if (min != max)
+            {
+                modifier = random.Range(min, max, level);
+            }
+            else
+            {
+                //Be generous and just give max
+                modifier = max;
+                Debug.Log("occurred at lvl " + level);
+            }
             // Take the previous health stat value
             // and add a random value between the previous vitality stat * min multiplier
             // and the current vitality stat * max multiplier and use current level
             // as the input value
-            nextValue = HealthStat.GetValue(level - 1) +
-            random.Range(VitalityStat.GetValue(level - 1) * Multiplier.Minimum, VitalityStat.GetValue(level) * Multiplier.Maximum, level);
+            nextValue = HealthStat.GetValue(level - 1) + modifier;
         }
         else if (level == 1)
         {
