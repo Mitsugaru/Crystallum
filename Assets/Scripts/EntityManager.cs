@@ -8,7 +8,7 @@ public class EntityManager : View, IEntityManager
     public int seed = 0;
     protected int currentSeed = 0;
 
-    public int start = 0;
+    protected int step = int.MinValue;
 
     protected HashFunction random;
 
@@ -32,6 +32,16 @@ public class EntityManager : View, IEntityManager
 
     public Entity Generate()
     {
-        return new Entity(unchecked((int)random.GetHash(start++)));
+        int val = step;
+        //ensure that we wrap around
+        if (step == int.MaxValue)
+        {
+            step = int.MinValue;
+        }
+        else
+        {
+            step++;
+        }
+        return new Entity(unchecked((int)random.GetHash(val)));
     }
 }
