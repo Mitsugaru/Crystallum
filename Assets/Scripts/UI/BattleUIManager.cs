@@ -99,7 +99,6 @@ public class BattleUIManager : View
 
     private IEnumerator GeneratePlayerParty()
     {
-        Debug.Log(PlayerParty.partySize);
         for (int i = 0; i < PlayerParty.partySize; i++)
         {
             Entity entity = EntityManager.Generate();
