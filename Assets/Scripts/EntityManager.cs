@@ -4,6 +4,8 @@ using strange.extensions.mediation.impl;
 
 public class EntityManager : View, IEntityManager
 {
+    [Inject]
+    public INameGenerator NameGenerator { get; set; }
 
     public int seed = 0;
     protected int currentSeed = 0;
@@ -42,6 +44,6 @@ public class EntityManager : View, IEntityManager
         {
             step++;
         }
-        return new Entity(unchecked((int)random.GetHash(val)));
+        return new Entity(NameGenerator.GenerateName(), unchecked((int)random.GetHash(val)));
     }
 }
