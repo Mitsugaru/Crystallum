@@ -21,8 +21,12 @@ public class RootContext : MVCSContext, IRootContext
         base.mapBindings();
 
         GameObject managers = GameObject.Find("Managers");
+        GameObject utilities = GameObject.Find("Utilities");
 
         injectionBinder.Bind<IRootContext>().ToValue(this).ToSingleton().CrossContext();
+
+        NameGenerator nameGen = utilities.GetComponent<NameGenerator>();
+        injectionBinder.Bind<INameGenerator>().ToValue(nameGen).ToSingleton().CrossContext();
 
         EventManager eventManager = managers.GetComponent<EventManager>();
         injectionBinder.Bind<IEventManager>().ToValue(eventManager).ToSingleton().CrossContext();
