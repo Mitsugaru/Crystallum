@@ -45,8 +45,13 @@ public class XXHash : HashFunction {
 	public XXHash (int seed) {
 		this.seed = (uint)seed;
 	}
-	
-	public uint GetHash (byte[] buf) {
+
+    public override uint GetSeed()
+    {
+        return seed;
+    }
+
+    public uint GetHash (byte[] buf) {
 		uint h32;
 		int index = 0;
 		int len = buf.Length;

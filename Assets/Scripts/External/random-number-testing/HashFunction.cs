@@ -13,6 +13,8 @@ public abstract class HashFunction {
 	
 	// Main hash function for any number of parameters.
 	public abstract uint GetHash (params int[] data);
+
+    public abstract uint GetSeed();
 	
 	// Optional optimizations for few parameters.
 	// Derived classes can optimize with custom implementations.
