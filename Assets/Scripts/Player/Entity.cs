@@ -158,6 +158,10 @@ public class Entity
     {
     }
 
+    public Entity(string name, int seed) : this(name, 1, seed)
+    {
+    }
+
     public Entity(int level, int seed) : this("NONAME", level, seed)
     {
     }
