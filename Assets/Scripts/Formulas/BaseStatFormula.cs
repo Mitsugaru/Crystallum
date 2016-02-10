@@ -48,16 +48,18 @@ public class BaseStatFormula : AbstractFormula<int>
             {
                 if (Multiplier.Maximum > 1 && Multiplier.Minimum != Multiplier.Maximum)
                 {
-                    int reroll = level + 1;
+                    //We continue to reroll, increasing the minimum range each step
+                    int increasingMin = Multiplier.Minimum + 1;
                     while (nextValue <= 1)
                     {
-                        nextValue = random.Range(Multiplier.Minimum, Multiplier.Maximum, reroll++);
-                        if (reroll < 10)
+                        if (increasingMin >= Multiplier.Maximum)
                         {
-                            //Give up and just give them max, if the immediate levels are that bad
+                            //Give up and just give them max
                             nextValue = Multiplier.Maximum;
                             break;
                         }
+                        nextValue = random.Range(increasingMin, Multiplier.Maximum, level);
+                        increasingMin++;
                     }
                 }
                 else
