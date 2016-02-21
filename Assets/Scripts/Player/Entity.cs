@@ -275,4 +275,23 @@ public class Entity
     {
         return new MultiplierValues(random.Range(min, max, count), random.Range(min, max, count + 1));
     }
+
+    public override bool Equals(object obj)
+    {
+        bool same = false;
+
+        Entity other = obj as Entity;
+        if (other != null)
+        {
+            //not including level or xp since those are mutable during battle
+            same = this.name.Equals(other.name) && random.GetSeed().Equals(other.random.GetSeed());
+        }
+
+        return same;
+    }
+
+    public override int GetHashCode()
+    {
+        return name.GetHashCode() * 17 + random.GetSeed().GetHashCode();
+    }
 }
