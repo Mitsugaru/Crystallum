@@ -42,6 +42,10 @@ public class CharacterPanelScript : MonoBehaviour
             SpiritField.text = Character.Spirit.ToString();
             DeftField.text = Character.Deft.ToString();
             VitalityField.text = Character.Vitality.ToString();
+            if (Character.HP == 0)
+            {
+                background.color = Color.red;
+            }
         }
     }
 
