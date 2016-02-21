@@ -7,6 +7,8 @@ using strange.extensions.mediation.impl;
 public class BattleManager : View, IBattleManager
 {
 
+    public int StartingSeed = 0;
+
     private List<Entity> enemyParty = new List<Entity>();
     public ReadOnlyCollection<Entity> EnemyParty
     {
@@ -24,6 +26,8 @@ public class BattleManager : View, IBattleManager
             return playerParty.AsReadOnly();
         }
     }
+
+    protected IBattleSystem CurrentBattle;
 
     // Use this for initialization
     protected override void Start()
@@ -55,5 +59,29 @@ public class BattleManager : View, IBattleManager
     public void ClearEnemies()
     {
         playerParty.Clear();
+    }
+
+    public void StartBattle()
+    {
+        if (CurrentBattle == null)
+        {
+            //CurrentBattle = SingleTurnBattleSystem(StartingSeed++);
+            SingleTurnBattleSystem system = gameObject.AddComponent<SingleTurnBattleSystem>();
+            system.SetSeed(StartingSeed++);
+            CurrentBattle = system;
+        }
+    }
+
+    public void StepBattle()
+    {
+        if (CurrentBattle != null)
+        {
+            CurrentBattle.BattleStep();
+        }
+    }
+
+    public bool InBattle()
+    {
+        return CurrentBattle != null;
     }
 }
