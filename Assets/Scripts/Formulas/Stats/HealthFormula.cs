@@ -3,7 +3,7 @@
 /// <summary>
 /// Formula that calculates HP stat values
 /// </summary>
-public class HealthFormula : AbstractFormula<int>
+public class HealthFormula : AbstractStatFormula<int>
 {
     /// <summary>
     /// Health stat reference

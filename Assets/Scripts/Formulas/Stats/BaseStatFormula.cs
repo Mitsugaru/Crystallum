@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Formula that calculates base stat values.
 /// </summary>
-public class BaseStatFormula : AbstractFormula<int>
+public class BaseStatFormula : AbstractStatFormula<int>
 {
     /// <summary>
     /// The stat reference

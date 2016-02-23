@@ -3,7 +3,7 @@
 /// <summary>
 /// Formula that calculates the XP values
 /// </summary>
-public class ExperienceFormula : AbstractFormula<int>
+public class ExperienceFormula : AbstractStatFormula<int>
 {
     /// <summary>
     /// Experience stats reference

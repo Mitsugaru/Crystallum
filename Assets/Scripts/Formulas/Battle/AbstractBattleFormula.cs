@@ -1,8 +1,12 @@
-﻿/// <summary>
-/// Abstract formula class with basic XXHash random function and multiplier values.
+﻿using UnityEngine;
+using System.Collections;
+
+/// <summary>
+/// Abstract battle formula class with basic XXHash random function and multiplier values.
 /// </summary>
-public abstract class AbstractFormula<T> : IFormula<T>
+public abstract class AbstractBattleFormula<T> : IBattleFormula<T>
 {
+
     /// <summary>
     /// Multiplier value that formulas use.
     /// </summary>
@@ -14,10 +18,11 @@ public abstract class AbstractFormula<T> : IFormula<T>
     /// </summary>
     protected HashFunction random;
 
-    public abstract T Generate(int level);
-    
+    public abstract T Generate(int attackerStat, int defenderStat, int turn, int actionCount);
+
     public void SetSeed(int seed)
     {
         random = new XXHash(seed);
     }
+
 }

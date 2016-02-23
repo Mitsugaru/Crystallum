@@ -1,13 +1,9 @@
-﻿using System;
-
-/// <summary>
+﻿/// <summary>
 /// Formula for handling the defensive damage mitigation values.
 /// Takes the ratio of the resolve stat to the max multiplier * max stat for highest level
 /// </summary>
-public class DefenseFormula : IFormula<double>
+public class DefenseFormula : AbstractStatFormula<double>
 {
-    public MultiplierValues Multiplier { get; set; }
-
     /// <summary>
     /// The resolve stat reference
     /// </summary>
@@ -22,7 +18,7 @@ public class DefenseFormula : IFormula<double>
         resolveStat = resolve;
     }
 
-    public double Generate(int level)
+    public override double Generate(int level)
     {
         double ratio = 0;
         int raw = resolveStat.GetValue(level);
@@ -30,8 +26,4 @@ public class DefenseFormula : IFormula<double>
         return ratio;
     }
 
-    public void SetSeed(int seed)
-    {
-        //Ignore for now, nothing is randomized here yet.
-    }
 }
