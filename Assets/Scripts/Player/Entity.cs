@@ -24,6 +24,10 @@ public class Entity
         {
             return level;
         }
+        set
+        {
+            level = value;
+        }
     }
 
     protected int hp = 0;
