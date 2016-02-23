@@ -967,15 +967,15 @@ MonoBehaviour:
   battleButton: {fileID: 123872656}
   commandPanel: {fileID: 1568455175}
   EnemyParty:
-    partySize: 5
-    baseLevel: 15
-    minDelta: 5
-    maxDelta: 2
+    partySize: 1
+    baseLevel: 600
+    minDelta: 0
+    maxDelta: 50
   PlayerParty:
-    partySize: 5
-    baseLevel: 20
-    minDelta: 3
-    maxDelta: 3
+    partySize: 6
+    baseLevel: 100
+    minDelta: 0
+    maxDelta: 0
   StartingSeed: 0
   step: 0
 --- !u!114 &206801793
