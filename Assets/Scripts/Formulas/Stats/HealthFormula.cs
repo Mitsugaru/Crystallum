@@ -44,7 +44,6 @@ public class HealthFormula : AbstractStatFormula<int>
             {
                 //Be generous and just give max
                 modifier = max;
-                Debug.Log("occurred at lvl " + level);
             }
             // Take the previous health stat value
             // and add a random value between the previous vitality stat * min multiplier
