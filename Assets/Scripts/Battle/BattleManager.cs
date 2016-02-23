@@ -9,6 +9,18 @@ public class BattleManager : View, IBattleManager
 
     public int StartingSeed = 0;
 
+    public int minSlopeMulti = 1;
+
+    public int maxSlopeMulti = 5;
+
+    public int minAddMulti = 1;
+
+    public int maxAddMulti = 10;
+
+    public int minDefMulti = 2;
+
+    public int maxDefMulti = 5;
+
     private List<Entity> enemyParty = new List<Entity>();
     public ReadOnlyCollection<Entity> EnemyParty
     {
@@ -27,7 +39,7 @@ public class BattleManager : View, IBattleManager
         }
     }
 
-    protected IBattleSystem CurrentBattle;
+    protected AbstractBattleSystem CurrentBattle;
 
     // Use this for initialization
     protected override void Start()
@@ -65,9 +77,14 @@ public class BattleManager : View, IBattleManager
     {
         if (CurrentBattle == null)
         {
+            HealParties();
             //CurrentBattle = SingleTurnBattleSystem(StartingSeed++);
             SingleTurnBattleSystem system = gameObject.AddComponent<SingleTurnBattleSystem>();
             system.SetSeed(StartingSeed++);
+            system.Formula = new LinearBattleFormula(new MultiplierValues(minSlopeMulti, maxSlopeMulti), new MultiplierValues(minAddMulti, maxAddMulti), new MultiplierValues(minDefMulti, maxDefMulti));
+            system.Formula.SetSeed(StartingSeed);
+            system.VictoryCondition = new PartyWipeCondition(enemyParty);
+            system.LossCondition = new PartyWipeCondition(playerParty);
             CurrentBattle = system;
         }
     }
@@ -78,10 +95,27 @@ public class BattleManager : View, IBattleManager
         {
             CurrentBattle.BattleStep();
         }
+        if (CurrentBattle.ConditionResult())
+        {
+            Destroy(CurrentBattle);
+            CurrentBattle = null;
+        }
     }
 
     public bool InBattle()
     {
         return CurrentBattle != null;
+    }
+
+    protected void HealParties()
+    {
+        foreach (Entity entity in enemyParty)
+        {
+            entity.HP = entity.MaxHP;
+        }
+        foreach (Entity entity in playerParty)
+        {
+            entity.HP = entity.MaxHP;
+        }
     }
 }

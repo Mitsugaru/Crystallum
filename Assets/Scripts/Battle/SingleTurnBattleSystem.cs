@@ -1,34 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using strange.extensions.mediation.impl;
 using System;
+using System.Collections.ObjectModel;
 
-public class SingleTurnBattleSystem : View, IBattleSystem
+public class SingleTurnBattleSystem : AbstractBattleSystem
 {
 
-    [Inject]
-    public IBattleManager BattleManager { get; set; }
-
-    protected int turn = 0;
-    public int Turn
-    {
-        get
-        {
-            return turn;
-        }
-    }
-    protected int actionCount = 0;
-
+    /// <summary>
+    /// Current speed count, to tell where we are in terms of who has acted and who is next.
+    /// </summary>
     protected int speedCount = 0;
 
-    protected Dictionary<Entity, BattleStats> stats = new Dictionary<Entity, BattleStats>();
-
-    protected HashFunction random;
+    /// <summary>
+    /// Flag to ensure we only cycle once through the entire list
+    /// in the event that no one can act for a given turn.
+    /// </summary>
+    protected bool cycled = false;
 
     protected override void Start()
     {
         base.Start();
+
+        speedCount = StatUtils.CalcMaxStat(StatUtils.MAX_LEVEL);
 
         foreach (Entity enemy in BattleManager.EnemyParty)
         {
@@ -40,8 +34,9 @@ public class SingleTurnBattleSystem : View, IBattleSystem
         }
     }
 
-    public void BattleStep()
+    public override void BattleStep()
     {
+        Debug.Log("=== Turn " + Turn);
         Entity[] actors = GetNextActingEntities();
         foreach (Entity actor in actors)
         {
@@ -52,12 +47,14 @@ public class SingleTurnBattleSystem : View, IBattleSystem
                 Entity target = null;
                 if (BattleManager.EnemyParty.Contains(actor))
                 {
-                    int index = random.Range(0, BattleManager.PlayerParty.Count, actionCount++);
+                    int index = AcquireValidTarget(BattleManager.PlayerParty);
+                    IncrementAction();
                     target = BattleManager.PlayerParty[index];
                 }
                 else if (BattleManager.PlayerParty.Contains(actor))
                 {
-                    int index = random.Range(0, BattleManager.EnemyParty.Count, actionCount++);
+                    int index = AcquireValidTarget(BattleManager.EnemyParty);
+                    IncrementAction();
                     target = BattleManager.EnemyParty[index];
                 }
                 if (target != null)
@@ -65,31 +62,50 @@ public class SingleTurnBattleSystem : View, IBattleSystem
                     BattleStats targetStats;
                     if (stats.TryGetValue(target, out targetStats))
                     {
-                        //TODO Calculate damage
-                        int dmg = 1;
+                        int dmg = 0;
+                        // Calculate damage
+                        if (actorStat.Virtue >= actorStat.Spirit)
+                        {
+                            dmg = Formula.Generate(actorStat.Virtue, targetStats.Resolve, Turn, ActionCount);
+                        }
+                        else
+                        {
+                            dmg = Formula.Generate(actorStat.Spirit, targetStats.Spirit, Turn, ActionCount);
+                        }
                         targetStats.HP -= dmg;
                         Debug.Log(actor.Name + " damages " + target.Name + " for " + dmg);
-                        actionCount++;
+                        IncrementAction();
                     }
                 }
             }
-            speedCount = actorStat.Deft + 1;
-            //TODO victory check
+            speedCount = actorStat.Deft - 1;
+
+            if (ConditionCheck())
+            {
+                //Battle complete
+                Debug.Log("=== Battle complete!");
+                break;
+            }
+        }
+        if (!ConditionResult())
+        {
+            IncrementTurn();
         }
     }
 
-    public Entity[] GetNextActingEntities()
+    public override Entity[] GetNextActingEntities()
     {
         List<Entity> acting = new List<Entity>();
-        int lowest = StatUtils.MAX_STAT;
+        int highest = 0;
         foreach (KeyValuePair<Entity, BattleStats> entry in stats)
         {
-            if (entry.Value.Deft < lowest && entry.Value.Deft >= speedCount)
+            if (entry.Value.Deft > highest && entry.Value.Deft <= speedCount && CanAct(entry.Key))
             {
-                lowest = entry.Value.Deft;
+                highest = entry.Value.Deft;
+                acting.Clear();
                 acting.Add(entry.Key);
             }
-            else if (entry.Value.Deft == lowest)
+            else if (entry.Value.Deft == highest && CanAct(entry.Key))
             {
                 acting.Add(entry.Key);
             }
@@ -98,20 +114,37 @@ public class SingleTurnBattleSystem : View, IBattleSystem
         if (acting.Count == 0)
         {
             //Reset and try again
-            speedCount = 0;
-            return GetNextActingEntities();
+            speedCount = StatUtils.CalcMaxStat(StatUtils.MAX_LEVEL);
+            if (!cycled)
+            {
+                cycled = true;
+                return GetNextActingEntities();
+            }
+        }
+        else
+        {
+            cycled = false;
         }
 
         return acting.ToArray();
     }
 
-    protected void DetermineNext() { }
-
-    public void SetSeed(int seed)
+    protected int AcquireValidTarget(ReadOnlyCollection<Entity> targets)
     {
-        if (random == null)
+        int index = 0;
+
+        List<Entity> available = new List<Entity>();
+        foreach (Entity target in targets)
         {
-            random = new XXHash(seed);
+            if (target.HP > 0)
+            {
+                available.Add(target);
+            }
         }
+        int availableIndex = random.Range(0, available.Count, actionCount);
+        index = targets.IndexOf(available[availableIndex]);
+
+        return index;
     }
+
 }
