@@ -40,7 +40,13 @@ public class BattleUIManager : View
 
     public BattleConfig PlayerParty;
 
+    public int StartingSeed = 0;
+
+    public int step = 0;
+
     private Dictionary<Entity, CharacterPanelScript> panelScripts = new Dictionary<Entity, CharacterPanelScript>();
+
+    private HashFunction random;
 
     // Use this for initialization
     protected override void Start()
@@ -53,6 +59,8 @@ public class BattleUIManager : View
         playerGenerateButton.GetComponent<Button>().onClick.AddListener(HandlePlayerGenerate);
         playerClearButton.GetComponent<Button>().onClick.AddListener(HandlePlayerClear);
         battleButton.GetComponent<Button>().onClick.AddListener(HandleBattleButton);
+
+        random = new XXHash(StartingSeed);
     }
 
     // Update is called once per frame
@@ -97,7 +105,8 @@ public class BattleUIManager : View
     {
         for (int i = 0; i < EnemyParty.partySize; i++)
         {
-            Entity entity = EntityManager.Generate();
+            int level = random.Range(EnemyParty.baseLevel - EnemyParty.minDelta, EnemyParty.baseLevel + EnemyParty.maxDelta, step++);
+            Entity entity = EntityManager.Generate(level);
             BattleManager.AddEnemyMember(entity);
             GameObject charPanel = Instantiate(CharacterPanelPrefab);
             CharacterPanelScript script = charPanel.GetComponent<CharacterPanelScript>();
@@ -125,7 +134,8 @@ public class BattleUIManager : View
     {
         for (int i = 0; i < PlayerParty.partySize; i++)
         {
-            Entity entity = EntityManager.Generate();
+            int level = random.Range(PlayerParty.baseLevel - PlayerParty.minDelta, PlayerParty.baseLevel + PlayerParty.maxDelta, step++);
+            Entity entity = EntityManager.Generate(level);
             BattleManager.AddPartyMember(entity);
             GameObject charPanel = Instantiate(CharacterPanelPrefab);
             CharacterPanelScript script = charPanel.GetComponent<CharacterPanelScript>();
@@ -167,7 +177,7 @@ public class BattleUIManager : View
         playerGenerateButton.GetComponent<Button>().interactable = false;
         playerClearButton.GetComponent<Button>().interactable = false;
         commandPanel.SetActive(false);
-        //TODO tell battle manager to start a battle
+        // tell battle manager to start a battle
         if (BattleManager.InBattle())
         {
             BattleManager.StepBattle();

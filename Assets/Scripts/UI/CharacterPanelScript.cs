@@ -20,6 +20,10 @@ public class CharacterPanelScript : MonoBehaviour
 
     public Text VitalityField;
 
+    public Color baseColor = new Color(255, 255, 255, 100);
+
+    public Color deadColor = Color.red;
+
     private Image background;
 
     public Entity Character { get; set; }
@@ -44,7 +48,11 @@ public class CharacterPanelScript : MonoBehaviour
             VitalityField.text = Character.Vitality.ToString();
             if (Character.HP == 0)
             {
-                background.color = Color.red;
+                background.color = deadColor;
+            }
+            else
+            {
+                background.color = baseColor;
             }
         }
     }
