@@ -25,6 +25,8 @@ public class StatUtils
     /// </summary>
     public static readonly int MAX_HP = 5;
 
+    public static readonly int MAX_LEVEL = 100;
+
     /// <summary>
     /// Calculate the E-Value for a given level.
     /// If level is out of bounds, returns 0.
