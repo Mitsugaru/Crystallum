@@ -967,15 +967,17 @@ MonoBehaviour:
   battleButton: {fileID: 123872656}
   commandPanel: {fileID: 1568455175}
   EnemyParty:
-    partySize: 1
-    baseLevel: 1
-    minDelta: 0
-    maxDelta: 0
+    partySize: 5
+    baseLevel: 15
+    minDelta: 5
+    maxDelta: 2
   PlayerParty:
-    partySize: 1
-    baseLevel: 1
-    minDelta: 0
-    maxDelta: 0
+    partySize: 5
+    baseLevel: 20
+    minDelta: 3
+    maxDelta: 3
+  StartingSeed: 0
+  step: 0
 --- !u!114 &206801793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -987,6 +989,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5260a7c341e1fc643ac7459ac0c5ac74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartingSeed: 0
+  minSlopeMulti: 1
+  maxSlopeMulti: 5
+  minAddMulti: 1
+  maxAddMulti: 10
+  minDefMulti: 2
+  maxDefMulti: 5
 --- !u!114 &206801794
 MonoBehaviour:
   m_ObjectHideFlags: 0
