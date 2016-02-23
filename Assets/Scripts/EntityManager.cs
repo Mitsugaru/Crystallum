@@ -34,7 +34,20 @@ public class EntityManager : View, IEntityManager
 
     public Entity Generate()
     {
-        int val = step;
+        Entity entity = new Entity(NameGenerator.GenerateName(), unchecked((int)random.GetHash(step)));
+        IncreaseStep();
+        return entity;
+    }
+
+    public Entity Generate(int level)
+    {
+        Entity entity = new Entity(NameGenerator.GenerateName(), level, unchecked((int)random.GetHash(step)));
+        IncreaseStep();
+        return entity;
+    }
+
+    protected void IncreaseStep()
+    {
         //ensure that we wrap around
         if (step == int.MaxValue)
         {
@@ -44,6 +57,5 @@ public class EntityManager : View, IEntityManager
         {
             step++;
         }
-        return new Entity(NameGenerator.GenerateName(), unchecked((int)random.GetHash(val)));
     }
 }
