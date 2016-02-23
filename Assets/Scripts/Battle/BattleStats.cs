@@ -143,6 +143,14 @@ public class BattleStats
         }
     }
 
+    public int Limit
+    {
+        get
+        {
+            return entity.Limit;
+        }
+    }
+
     /// <summary>
     /// Constructor
     /// </summary>

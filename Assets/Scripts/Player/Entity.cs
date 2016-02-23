@@ -26,7 +26,26 @@ public class Entity
         }
         set
         {
-            level = value;
+            if (value <= limit)
+            {
+                level = value;
+            }
+        }
+    }
+
+    protected int limit = StatUtils.MAX_LEVEL;
+    public int Limit
+    {
+        get
+        {
+            return limit;
+        }
+        set
+        {
+            if (ValidateLimit(value))
+            {
+                limit = value;
+            }
         }
     }
 
@@ -173,7 +192,11 @@ public class Entity
     public Entity(string name, int level, int seed)
     {
         this.name = name;
-        this.level = level;
+        if (level > limit)
+        {
+            Limit = level;
+        }
+        this.Level = level;
         random = new XXHash(seed);
         GenerateFormulas();
         GenerateStats();
@@ -278,6 +301,46 @@ public class Entity
     protected MultiplierValues GenerateMultiplier(int min, int max, int count)
     {
         return new MultiplierValues(random.Range(min, max, count), random.Range(min, max, count + 1));
+    }
+
+    protected bool ValidateLimit(int level)
+    {
+        bool valid = false;
+        if (level > 0)
+        {
+            //Check each stat and up their limit if necessary
+            if (virtueStat.Limit < level)
+            {
+                virtueStat.Limit = level;
+            }
+            if (resolveStat.Limit < level)
+            {
+                resolveStat.Limit = level;
+            }
+            if (spiritStat.Limit < level)
+            {
+                spiritStat.Limit = level;
+            }
+            if (deftStat.Limit < level)
+            {
+                deftStat.Limit = level;
+            }
+            if (vitalityStat.Limit < level)
+            {
+                vitalityStat.Limit = level;
+            }
+            if (hpStat.Limit < level)
+            {
+                hpStat.Limit = level;
+            }
+            if (xpStat.Limit < level)
+            {
+                xpStat.Limit = level;
+            }
+
+            valid = true;
+        }
+        return valid;
     }
 
     public override bool Equals(object obj)
