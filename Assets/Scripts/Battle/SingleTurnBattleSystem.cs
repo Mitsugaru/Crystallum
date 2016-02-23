@@ -22,7 +22,7 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
     {
         base.Start();
 
-        speedCount = StatUtils.CalcMaxStat(StatUtils.MAX_LEVEL);
+        speedCount = StatUtils.CalcMaxStat(StatUtils.MAX_ENEMY_LEVEL);
 
         foreach (Entity enemy in BattleManager.EnemyParty)
         {
@@ -64,14 +64,19 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
                     {
                         int dmg = 0;
                         // Calculate damage
+                        BattleActorInfo attacker;
+                        BattleActorInfo defender;
                         if (actorStat.Virtue >= actorStat.Spirit)
                         {
-                            dmg = Formula.Generate(actorStat.Virtue, targetStats.Resolve, Turn, ActionCount);
+                            attacker = new BattleActorInfo(actorStat, actorStat.Virtue, actor.Level);
+                            defender = new BattleActorInfo(targetStats, targetStats.Resolve, target.Level);
                         }
                         else
                         {
-                            dmg = Formula.Generate(actorStat.Spirit, targetStats.Spirit, Turn, ActionCount);
+                            attacker = new BattleActorInfo(actorStat, actorStat.Spirit, actor.Level);
+                            defender = new BattleActorInfo(targetStats, targetStats.Spirit, target.Level);
                         }
+                        dmg = Formula.Generate(attacker, defender, Turn, ActionCount);
                         targetStats.HP -= dmg;
                         Debug.Log(actor.Name + " damages " + target.Name + " for " + dmg);
                         IncrementAction();
@@ -114,7 +119,7 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
         if (acting.Count == 0)
         {
             //Reset and try again
-            speedCount = StatUtils.CalcMaxStat(StatUtils.MAX_LEVEL);
+            speedCount = StatUtils.CalcMaxStat(StatUtils.MAX_ENEMY_LEVEL);
             if (!cycled)
             {
                 cycled = true;

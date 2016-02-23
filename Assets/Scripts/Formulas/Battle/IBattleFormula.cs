@@ -5,12 +5,17 @@ using System;
 public interface IBattleFormula<T> : IFormula<T> {
 
     /// <summary>
-    /// Calculate the damage the attacker does based on the given primary stats.
+    /// The range of the defense multiplier
     /// </summary>
-    /// <param name="attackerStat">Primary attacker stat</param>
-    /// <param name="defenderStat">Primary defending stat</param>
+    MultiplierValues DefenseMultiplier { get; set; }
+
+    /// <summary>
+    ///  Calculate the damage the attacker does based on the given primary stats.
+    /// </summary>
+    /// <param name="attacker">Attacker info</param>
+    /// <param name="defender">Defender info</param>
     /// <param name="turn">The battle system turn</param>
     /// <param name="actionCount">The current battle system action count</param>
     /// <returns>The total damage incurred</returns>
-    T Generate(int attackerStat, int defenderStat, int turn, int actionCount);
+    T Generate(BattleActorInfo attacker, BattleActorInfo defender, int turn, int actionCount);
 }

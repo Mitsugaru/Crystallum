@@ -6,9 +6,9 @@
 public class StatUtils
 {
     /// <summary>
-    /// Theoretical maximum experience value
+    /// Maximum experience factor
     /// </summary>
-    public static readonly int MAX_EXP = 100000;
+    public static readonly int MAX_EXP_FACTOR = 1000;
 
     /// <summary>
     /// The minimum value range for a stat
@@ -27,20 +27,22 @@ public class StatUtils
 
     public static readonly int MAX_LEVEL = 100;
 
+    public static readonly int MAX_ENEMY_LEVEL = 1000;
+
     /// <summary>
     /// Calculate the E-Value for a given level.
     /// If level is out of bounds, returns 0.
     /// </summary>
     /// <param name="level">Level to calculate</param>
     /// <returns>E-Value for level</returns>
-    public static float CalcEValue(int level)
+    public static float CalcEValue(int level, int maxLevel)
     {
         float eVal = 0;
 
         if (level >= 1 && level <= 100)
         {
             //(EXP(current level × 3 ÷ 101) − 1 ÷ (EXP(3) − 1)) ÷ 20
-            eVal = (Mathf.Exp(level * 3f / 101f) - 1f / (Mathf.Exp(3f) - 1f)) / 20f;
+            eVal = (Mathf.Exp(level * 3f / (maxLevel + 1f)) - 1f / (Mathf.Exp(3f) - 1f)) / 20f;
         }
 
         return eVal;
@@ -50,15 +52,20 @@ public class StatUtils
     /// Calculate the base experience value.
     /// </summary>
     /// <returns>Base XP value</returns>
-    public static float CalcBaseExp()
+    public static float CalcBaseExp(int maxLevel)
     {
-        return CalcEValue(1) * MAX_EXP;
+        return CalcEValue(1, maxLevel) * CalcMaxExp(maxLevel);
+    }
+
+    public static int CalcMaxExp(int maxLevel)
+    {
+        return maxLevel * MAX_EXP_FACTOR;
     }
 
     public static int CalcMaxStat(int level)
     {
         int max = 0;
-        if (level >= 1 && level <= 100)
+        if (level >= 1)
         {
             max = level * MAX_STAT;
         }
