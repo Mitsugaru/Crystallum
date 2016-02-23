@@ -105,7 +105,11 @@ public class BattleUIManager : View
     {
         for (int i = 0; i < EnemyParty.partySize; i++)
         {
-            int level = random.Range(EnemyParty.baseLevel - EnemyParty.minDelta, EnemyParty.baseLevel + EnemyParty.maxDelta, step++);
+            int level = EnemyParty.baseLevel;
+            if (EnemyParty.minDelta < EnemyParty.maxDelta)
+            {
+                level = random.Range(EnemyParty.baseLevel - EnemyParty.minDelta, EnemyParty.baseLevel + EnemyParty.maxDelta, step++);
+            }
             Entity entity = EntityManager.Generate(level);
             BattleManager.AddEnemyMember(entity);
             GameObject charPanel = Instantiate(CharacterPanelPrefab);
@@ -134,7 +138,11 @@ public class BattleUIManager : View
     {
         for (int i = 0; i < PlayerParty.partySize; i++)
         {
-            int level = random.Range(PlayerParty.baseLevel - PlayerParty.minDelta, PlayerParty.baseLevel + PlayerParty.maxDelta, step++);
+            int level = PlayerParty.baseLevel;
+            if (PlayerParty.minDelta < PlayerParty.maxDelta)
+            {
+                level = random.Range(PlayerParty.baseLevel - PlayerParty.minDelta, PlayerParty.baseLevel + PlayerParty.maxDelta, step++);
+            }
             Entity entity = EntityManager.Generate(level);
             BattleManager.AddPartyMember(entity);
             GameObject charPanel = Instantiate(CharacterPanelPrefab);
