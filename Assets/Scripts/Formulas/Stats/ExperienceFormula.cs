@@ -23,7 +23,7 @@ public class ExperienceFormula : AbstractStatFormula<int>
     {
         int expReq = 0;
 
-        int expVal = Mathf.FloorToInt(StatUtils.CalcEValue(level, experience.Limit) * StatUtils.CalcMaxExp(experience.Limit) - StatUtils.CalcBaseExp(experience.Limit));
+        int expVal = Mathf.FloorToInt(StatUtils.CalcEValue(level, experience.Limit) * Multiplier.Maximum - StatUtils.CalcBaseExp(experience.Limit, Multiplier.Maximum));
         if (level == 2)
         {
             expReq = expVal;

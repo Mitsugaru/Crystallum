@@ -5,10 +5,11 @@
 /// </summary>
 public class StatUtils
 {
+    public static readonly int MIN_EXP = 2000;
     /// <summary>
     /// Maximum experience factor
     /// </summary>
-    public static readonly int MAX_EXP_FACTOR = 1000;
+    public static readonly int MAX_EXP = 100000;
 
     /// <summary>
     /// The minimum value range for a stat
@@ -34,6 +35,7 @@ public class StatUtils
     /// If level is out of bounds, returns 0.
     /// </summary>
     /// <param name="level">Level to calculate</param>
+    /// <param name="maxLevel">The max level</param>
     /// <returns>E-Value for level</returns>
     public static float CalcEValue(int level, int maxLevel)
     {
@@ -51,15 +53,12 @@ public class StatUtils
     /// <summary>
     /// Calculate the base experience value.
     /// </summary>
+    /// <param name="maxLevel">The max level for the entity</param>
+    /// <param name="maxExp">The max experience for the entity</param>
     /// <returns>Base XP value</returns>
-    public static float CalcBaseExp(int maxLevel)
+    public static float CalcBaseExp(int maxLevel, int maxExp)
     {
-        return CalcEValue(1, maxLevel) * CalcMaxExp(maxLevel);
-    }
-
-    public static int CalcMaxExp(int maxLevel)
-    {
-        return maxLevel * MAX_EXP_FACTOR;
+        return CalcEValue(1, maxLevel) * maxExp;
     }
 
     public static int CalcMaxStat(int level)

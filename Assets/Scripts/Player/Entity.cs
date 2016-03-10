@@ -235,6 +235,10 @@ public class Entity
         MultiplierValues hpMultipliers = GenerateMultiplier(StatUtils.MIN_STAT, StatUtils.MAX_HP, rCount);
         rCount += 2;
 
+        // Exp
+        MultiplierValues xpMultipliers = GenerateMultiplier(StatUtils.MIN_EXP, StatUtils.MAX_EXP, rCount);
+        rCount += 2;
+
         /*
          * Genereate formulas
          */
@@ -277,6 +281,7 @@ public class Entity
         // Experience
         ExperienceFormula xpFormula = new ExperienceFormula(xpStat);
         xpFormula.SetSeed(unchecked((int)random.GetHash(rCount++)));
+        xpFormula.Multiplier = xpMultipliers;
         xpStat.SetFormula(xpFormula);
     }
 
