@@ -13,7 +13,7 @@ public abstract class AbstractBattleFormula<T> : IBattleFormula<T>
     /// <summary>
     /// XXHash based hash function
     /// </summary>
-    protected HashFunction random;
+    protected HashFunction random = new XXHash(0);
 
     public abstract T Generate(BattleActorInfo attacker, BattleActorInfo defender, int turn, int actionCount);
 

@@ -2,6 +2,13 @@
 using System.Collections;
 using System;
 
+/// <summary>
+/// Linear-based formula calculation.
+/// Follows: m * x + b
+/// Where the value of M is dicated by the parent Multiplier
+/// Value of X is the attacker value
+/// Value of b is dictated by the addition multiplier.
+/// </summary>
 public class LinearBattleFormula : AbstractBattleFormula<int>
 {
     /// <summary>

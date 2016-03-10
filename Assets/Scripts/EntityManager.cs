@@ -12,7 +12,7 @@ public class EntityManager : View, IEntityManager
 
     protected int step = int.MinValue;
 
-    protected HashFunction random;
+    protected HashFunction random = new XXHash(0);
 
     // Use this for initialization
     protected override void Start()
