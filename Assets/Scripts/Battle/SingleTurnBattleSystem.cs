@@ -76,9 +76,10 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
                             attacker = new BattleActorInfo(actorStat, actorStat.Spirit, actor.Level);
                             defender = new BattleActorInfo(targetStats, targetStats.Spirit, target.Level);
                         }
-                        dmg = Formula.Generate(attacker, defender, Turn, ActionCount);
+                        IBattleFormula<int> formula = BattleFormulaQueue.Queue.Dequeue();
+                        dmg = formula.Generate(attacker, defender, Turn, ActionCount);
                         targetStats.HP -= dmg;
-                        Debug.Log(actor.Name + " damages " + target.Name + " for " + dmg);
+                        Debug.Log(actor.Name + " damages " + target.Name + " for " + dmg + " using " + formula.GetType().Name);
                         IncrementAction();
                     }
                 }
@@ -95,6 +96,7 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
         if (!ConditionResult())
         {
             IncrementTurn();
+            BattleFormulaQueue.PopulateQueue();
         }
     }
 

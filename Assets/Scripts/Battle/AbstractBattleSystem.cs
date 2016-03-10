@@ -27,7 +27,7 @@ public abstract class AbstractBattleSystem : View, IBattleSystem
 
     public ICondition LossCondition { get; set; }
 
-    public IBattleFormula<int> Formula { get; set; }
+    public FormulaQueue BattleFormulaQueue { get; set; }
 
     /// <summary>
     /// A mapping of entites to their temporary battle stats.
@@ -38,7 +38,7 @@ public abstract class AbstractBattleSystem : View, IBattleSystem
     /// <summary>
     /// Random hash function
     /// </summary>
-    protected HashFunction random;
+    protected HashFunction random = new XXHash(0);
 
     public abstract void BattleStep();
     public abstract Entity[] GetNextActingEntities();
@@ -69,10 +69,7 @@ public abstract class AbstractBattleSystem : View, IBattleSystem
 
     public void SetSeed(int seed)
     {
-        if (random == null)
-        {
-            random = new XXHash(seed);
-        }
+        random = new XXHash(seed);
     }
 
     protected bool CanAct(Entity entity)

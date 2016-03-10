@@ -27,7 +27,7 @@ public interface IBattleSystem
     /// <summary>
     /// Battle formula that calculates damage values
     /// </summary>
-    IBattleFormula<int> Formula { get; set; }
+    FormulaQueue BattleFormulaQueue { get; set; }
 
     /// <summary>
     /// Step through a battle phase.

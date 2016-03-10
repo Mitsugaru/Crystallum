@@ -80,13 +80,10 @@ public class BattleManager : View, IBattleManager
             HealParties();
             //CurrentBattle = SingleTurnBattleSystem(StartingSeed++);
             SingleTurnBattleSystem system = gameObject.AddComponent<SingleTurnBattleSystem>();
+            system.BattleFormulaQueue = new FormulaQueue(GenerateFormulas());
+            system.BattleFormulaQueue.PopulateQueue();
             system.SetSeed(StartingSeed++);
-            //system.Formula = new LinearBattleFormula(new MultiplierValues(minSlopeMulti, maxSlopeMulti), new MultiplierValues(minAddMulti, maxAddMulti), new MultiplierValues(minDefMulti, maxDefMulti));
-            //system.Formula = new ExponentialBattleFormula();
-            system.Formula = new TaperedSquaredBattleFormula();
-            system.Formula.Multiplier = new MultiplierValues(3, 10);
-            system.Formula.DefenseMultiplier = new MultiplierValues(minDefMulti, maxDefMulti);
-            system.Formula.SetSeed(StartingSeed);
+            system.BattleFormulaQueue.SetSeed(StartingSeed++);
             system.VictoryCondition = new PartyWipeCondition(enemyParty);
             system.LossCondition = new PartyWipeCondition(playerParty);
             CurrentBattle = system;
@@ -121,5 +118,45 @@ public class BattleManager : View, IBattleManager
         {
             entity.HP = entity.MaxHP;
         }
+    }
+
+    protected ICollection<IBattleFormula<int>> GenerateFormulas()
+    {
+        HashSet<IBattleFormula<int>> set = new HashSet<IBattleFormula<int>>();
+
+        MultiplierValues defense = new MultiplierValues(minDefMulti, maxDefMulti);
+
+        LogarithmicBattleFormula logarithmic = new LogarithmicBattleFormula();
+        logarithmic.DefenseMultiplier = defense;
+        logarithmic.Multiplier = new MultiplierValues(0, 2);
+        logarithmic.SetSeed(StartingSeed);
+        set.Add(logarithmic);
+
+        LinearBattleFormula linear = new LinearBattleFormula();
+        linear.AdditionMultiplier = new MultiplierValues(minAddMulti, maxAddMulti);
+        linear.DefenseMultiplier = defense;
+        linear.Multiplier = new MultiplierValues(minSlopeMulti, maxSlopeMulti);
+        linear.SetSeed(StartingSeed);
+        set.Add(linear);
+
+        NormalExponentialBattleFormula normal = new NormalExponentialBattleFormula();
+        normal.DefenseMultiplier = defense;
+        normal.Multiplier = new MultiplierValues(1, 15);
+        normal.SetSeed(StartingSeed);
+        set.Add(normal);
+
+        TaperedSquaredBattleFormula tapered = new TaperedSquaredBattleFormula();
+        tapered.Multiplier = new MultiplierValues(3, 10);
+        tapered.DefenseMultiplier = defense;
+        tapered.SetSeed(StartingSeed);
+        set.Add(tapered);
+
+        ExponentialBattleFormula exponential = new ExponentialBattleFormula();
+        exponential.Multiplier = new MultiplierValues(90, 100);
+        exponential.DefenseMultiplier = defense;
+        exponential.SetSeed(StartingSeed);
+        set.Add(exponential);
+
+        return set;
     }
 }
