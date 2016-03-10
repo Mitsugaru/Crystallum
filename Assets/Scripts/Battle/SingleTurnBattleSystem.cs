@@ -66,25 +66,25 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
                         // Calculate damage
                         BattleActorInfo attacker;
                         BattleActorInfo defender;
-                        if (actorStat.Virtue >= actorStat.Spirit)
+                        if (actorStat.GetVirtue() >= actorStat.GetSpirit())
                         {
-                            attacker = new BattleActorInfo(actorStat, actorStat.Virtue, actor.Level);
-                            defender = new BattleActorInfo(targetStats, targetStats.Resolve, target.Level);
+                            attacker = new BattleActorInfo(actorStat, actorStat.GetVirtue(), actor.Level);
+                            defender = new BattleActorInfo(targetStats, targetStats.GetResolve(), target.Level);
                         }
                         else
                         {
-                            attacker = new BattleActorInfo(actorStat, actorStat.Spirit, actor.Level);
-                            defender = new BattleActorInfo(targetStats, targetStats.Spirit, target.Level);
+                            attacker = new BattleActorInfo(actorStat, actorStat.GetSpirit(), actor.Level);
+                            defender = new BattleActorInfo(targetStats, targetStats.GetSpirit(), target.Level);
                         }
                         IBattleFormula<int> formula = BattleFormulaQueue.Queue.Dequeue();
                         dmg = formula.Generate(attacker, defender, Turn, ActionCount);
-                        targetStats.HP -= dmg;
+                        targetStats.SetHP(targetStats.GetHP() - dmg);
                         Debug.Log(actor.Name + " damages " + target.Name + " for " + dmg + " using " + formula.GetType().Name);
                         IncrementAction();
                     }
                 }
             }
-            speedCount = actorStat.Deft - 1;
+            speedCount = actorStat.GetDeft() - 1;
 
             if (ConditionCheck())
             {
@@ -106,13 +106,13 @@ public class SingleTurnBattleSystem : AbstractBattleSystem
         int highest = 0;
         foreach (KeyValuePair<Entity, BattleStats> entry in stats)
         {
-            if (entry.Value.Deft > highest && entry.Value.Deft <= speedCount && CanAct(entry.Key))
+            if (entry.Value.GetDeft() > highest && entry.Value.GetDeft() <= speedCount && CanAct(entry.Key))
             {
-                highest = entry.Value.Deft;
+                highest = entry.Value.GetDeft();
                 acting.Clear();
                 acting.Add(entry.Key);
             }
-            else if (entry.Value.Deft == highest && CanAct(entry.Key))
+            else if (entry.Value.GetDeft() == highest && CanAct(entry.Key))
             {
                 acting.Add(entry.Key);
             }

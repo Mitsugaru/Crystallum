@@ -24,124 +24,15 @@ public class BattleStats
     //TODO have different kinds of temp hp. Ones that can be regenerated. Versus ones that cannot.
     protected int tempHp = 0;
     protected int maxTempHp = 0;
-
-    public int HP
-    {
-        get
-        {
-            return entity.HP + tempHp;
-        }
-        set
-        {
-            if (value > entity.MaxHP)
-            {
-                entity.HP = entity.MaxHP;
-                tempHp = value - entity.HP;
-                if (tempHp > maxTempHp)
-                {
-                    tempHp = maxTempHp;
-                }
-            }
-            else
-            {
-                tempHp = 0;
-                entity.HP = value;
-            }
-        }
-    }
-    /// <summary>
-    /// Max HP value
-    /// </summary>
-    public int MaxHP
-    {
-        get
-        {
-            return entity.MaxHP + maxTempHp;
-        }
-    }
-
     protected int modVirtue = 0;
-    /// <summary>
-    /// Current virtue value
-    /// </summary>
-    public int Virtue
-    {
-        get
-        {
-            return CalculatePositiveSum(entity.Virtue, modVirtue);
-        }
-        set
-        {
-            modVirtue = CalculateDiff(entity.Virtue, value);
-        }
-    }
-
     protected int modResolve = 0;
-    /// <summary>
-    /// Current resolve value
-    /// </summary>
-    public int Resolve
-    {
-        get
-        {
-            return CalculatePositiveSum(entity.Resolve, modResolve);
-        }
-        set
-        {
-            modResolve = CalculateDiff(entity.Resolve, value);
-        }
-    }
-
     protected int modSpirit = 0;
-    /// <summary>
-    /// Current spirit value
-    /// </summary>
-    public int Spirit
-    {
-        get
-        {
-            return CalculatePositiveSum(entity.Spirit, modSpirit);
-        }
-        set
-        {
-            modSpirit = CalculateDiff(entity.Spirit, value);
-        }
-    }
-
     protected int modDeft = 0;
-    /// <summary>
-    /// Current deft value
-    /// </summary>
-    public int Deft
-    {
-        get
-        {
-            return CalculatePositiveSum(entity.Deft, modDeft);
-        }
-        set
-        {
-            modDeft = CalculateDiff(entity.Spirit, value);
-        }
-    }
     //TODO maybe not have this modifiable... Would be difficult as we calculate
     //entity HP from their base stat and not from this masked stat...
     //Unless we give each Entity a BattleStats instance... which I don't
     //particularly care for.
     protected int modVitality = 0;
-    /// <summary>
-    /// Current vitality value
-    /// </summary>
-    public int Vitality
-    {
-        get
-        {
-            return CalculatePositiveSum(entity.Vitality, modVitality);
-        }
-        set
-        {
-            modVitality = CalculateDiff(entity.Vitality, modVitality);
-        }
-    }
 
     public int Limit
     {
@@ -158,6 +49,88 @@ public class BattleStats
     public BattleStats(Entity entity)
     {
         this.entity = entity;
+    }
+
+    public int GetHP()
+    {
+        return entity.HP + tempHp;
+    }
+
+    public void SetHP(int value)
+    {
+        if (value > entity.MaxHP)
+        {
+            entity.SetHP(entity.MaxHP);
+            tempHp = value - entity.HP;
+            if (tempHp > maxTempHp)
+            {
+                tempHp = maxTempHp;
+            }
+        }
+        else
+        {
+            tempHp = 0;
+            entity.SetHP(value);
+        }
+    }
+
+    /// <summary>
+    /// Max HP value
+    /// </summary>
+    /// <returns>Max HP</returns>
+    public int GetMaxHP()
+    {
+        return entity.MaxHP + maxTempHp;
+    }
+
+    public int GetVirtue()
+    {
+        return CalculatePositiveSum(entity.Virtue, modVirtue);
+    }
+
+    public void SetVirtue(int value)
+    {
+        modVirtue = CalculateDiff(entity.Virtue, value);
+    }
+
+    public int GetResolve()
+    {
+        return CalculatePositiveSum(entity.Resolve, modResolve);
+    }
+
+    public void SetResolve(int value)
+    {
+        modResolve = CalculateDiff(entity.Resolve, value);
+    }
+
+    public int GetSpirit()
+    {
+        return CalculatePositiveSum(entity.Spirit, modSpirit);
+    }
+
+    public void SetSpirit(int value)
+    {
+        modSpirit = CalculateDiff(entity.Spirit, value);
+    }
+
+    public int GetDeft()
+    {
+        return CalculatePositiveSum(entity.Deft, modDeft);
+    }
+
+    public void SetDeft(int value)
+    {
+        modDeft = CalculateDiff(entity.Spirit, value);
+    }
+
+    public int GetVitality()
+    {
+        return CalculatePositiveSum(entity.Vitality, modVitality);
+    }
+
+    public void SetVitality(int value)
+    {
+        modVitality = CalculateDiff(entity.Vitality, modVitality);
     }
 
     /// <summary>

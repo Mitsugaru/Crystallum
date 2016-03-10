@@ -24,13 +24,6 @@ public class Entity
         {
             return level;
         }
-        set
-        {
-            if (value <= limit)
-            {
-                level = value;
-            }
-        }
     }
 
     protected int limit = StatUtils.MAX_LEVEL;
@@ -40,13 +33,6 @@ public class Entity
         {
             return limit;
         }
-        set
-        {
-            if (ValidateLimit(value))
-            {
-                limit = value;
-            }
-        }
     }
 
     protected int hp = 0;
@@ -55,22 +41,6 @@ public class Entity
         get
         {
             return hp;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                hp = 0;
-            }
-            else if (value > hpStat.GetValue(level))
-            {
-                //Make sure we don't go above their max hp;
-                hp = hpStat.GetValue(level);
-            }
-            else
-            {
-                hp = value;
-            }
         }
     }
 
@@ -84,23 +54,6 @@ public class Entity
         get
         {
             return xp;
-        }
-    }
-
-    /// <summary>
-    /// The XP required to achieve the next level
-    /// </summary>
-    /// <returns></returns>
-    public int XPToNextLevel
-    {
-        get
-        {
-            int req = xpStat.GetValue(level + 1) - xp;
-            if (req < 0)
-            {
-                req = 0;
-            }
-            return req;
         }
     }
 
@@ -194,9 +147,9 @@ public class Entity
         this.name = name;
         if (level > limit)
         {
-            Limit = level;
+            SetLimit(level);
         }
-        this.Level = level;
+        SetLevel(level);
         random = new XXHash(seed);
         GenerateFormulas();
         GenerateStats();
@@ -204,6 +157,53 @@ public class Entity
         //Get the values for hp and xp after generation
         hp = hpStat.GetValue(level);
         xp = xpStat.GetValue(level);
+    }
+
+    public void SetLevel(int value)
+    {
+        if (value <= limit)
+        {
+            level = value;
+        }
+    }
+
+    public void SetLimit(int value)
+    {
+        if (ValidateLimit(value))
+        {
+            limit = value;
+        }
+    }
+
+    public void SetHP(int value)
+    {
+        if (value < 0)
+        {
+            hp = 0;
+        }
+        else if (value > hpStat.GetValue(level))
+        {
+            //Make sure we don't go above their max hp;
+            hp = hpStat.GetValue(level);
+        }
+        else
+        {
+            hp = value;
+        }
+    }
+
+    /// <summary>
+    /// The XP required to achieve the next level
+    /// </summary>
+    /// <returns></returns>
+    public int GetXPToNext()
+    {
+        int req = xpStat.GetValue(level + 1) - xp;
+        if (req < 0)
+        {
+            req = 0;
+        }
+        return req;
     }
 
     protected void GenerateFormulas()

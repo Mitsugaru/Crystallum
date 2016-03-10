@@ -112,11 +112,11 @@ public class BattleManager : View, IBattleManager
     {
         foreach (Entity entity in enemyParty)
         {
-            entity.HP = entity.MaxHP;
+            entity.SetHP(entity.MaxHP);
         }
         foreach (Entity entity in playerParty)
         {
-            entity.HP = entity.MaxHP;
+            entity.SetHP(entity.MaxHP);
         }
     }
 
