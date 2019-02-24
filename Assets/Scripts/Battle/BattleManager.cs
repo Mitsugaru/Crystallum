@@ -65,12 +65,12 @@ public class BattleManager : View, IBattleManager
 
     public void ClearParty()
     {
-        enemyParty.Clear();
+        playerParty.Clear();
     }
 
     public void ClearEnemies()
     {
-        playerParty.Clear();
+        enemyParty.Clear();
     }
 
     public void StartBattle()
